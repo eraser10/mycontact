@@ -10,4 +10,7 @@ public class MycontactApplication {
 		SpringApplication.run(MycontactApplication.class, args);
 	}
 
+
+
+	
 }
