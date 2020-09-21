@@ -23,14 +23,15 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'com.h2database:h2'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
+	compileOnly 'org.projectlombok:lombok:1.18.12'
+	annotationProcessor 'org.projectlombok:lombok:1.18.12'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.junit.platform:junit-platform-launcher:1.5.2'
 	testImplementation 'org.junit.platform:junit-platform-commons:1.5.2'
-//	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.0'
+	testImplementation 'org.projectlombok:lombok:1.18.12'
 //	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.5.0'
 
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
 	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
 	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
 
