@@ -1,6 +1,7 @@
 package com.fastcampus.javaallinone.project3.mycontact.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -54,6 +55,22 @@ class PersonControllerTest {
     }
 
     @Test
+    void getAll() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/person")
+        .param("page", String.valueOf(1))
+        .param("size", "2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalPages").value(3))
+                .andExpect(jsonPath("$.totalElements").value(6))
+                .andExpect(jsonPath("$.numberOfElements").value(2))
+//                .andExpect(jsonPath("$.content.[0].name").value("martin"))
+//                .andExpect(jsonPath("$.content.[1].name").value("david"))
+                .andExpect(jsonPath("$.content.[0].name").value("dennis"))
+                .andExpect(jsonPath("$.content.[1].name").value("sophia"));
+//                .andExpect(jsonPath("$.content.[4].name").value("benny"))
+//                .andExpect(jsonPath("$.content.[5].name").value("tony"));
+    }
+    @Test
     void getPerson() throws Exception {
 
         mockMvc.perform(
@@ -102,8 +119,36 @@ class PersonControllerTest {
                 MockMvcRequestBuilders.post("/api/person")
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                         .content(toJsonString(dto)))
-                .andExpect(jsonPath("$.code").value(500))
-                .andExpect(jsonPath("$.message").value("알 수 없는 서버 오류가 발생하였습니다"));
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value(400))
+                .andExpect(jsonPath("$.message").value("이름은 필수값입니다"));
+    }
+
+    @Test
+    void postPersonIfNameIsEmpty() throws Exception {
+        PersonDto dto = new PersonDto();
+        dto.setName("");
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/person")
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .content(toJsonString(dto)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value(400))
+                .andExpect(jsonPath("$.message").value("이름은 필수값입니다"));
+    }
+
+    @Test
+    void postPersonIfNameIsBlankString() throws Exception{
+        PersonDto dto = new PersonDto();
+        dto.setName(" ");
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/person")
+        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(toJsonString(dto)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value(400))
+                .andExpect(jsonPath("$.message").value("이름은 필수값입니다"));
     }
 
     @Test
